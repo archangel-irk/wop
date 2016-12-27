@@ -12,7 +12,7 @@
 			"appId": "com_openf2_examples_javascript_chart",
 			"height": 300,
 			"minGridSize": 6,
-			"isSecure": false,
+			"isSecure": true,
 			"manifestUrl": "../apps/JavaScript/Chart/manifest.js",
 			"name": "Price Movement Chart"
 		},

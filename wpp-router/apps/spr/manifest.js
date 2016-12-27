@@ -1,14 +1,14 @@
 F2_jsonpCallback_com_wiley_spr({
-  "appId": "com_wiley_spr",
-  "scripts":[
+  appId: "com_wiley_spr",
+  scripts: [
     "apps/spr/app.js"
   ],
-  "styles":[
+  styles: [
     // "../apps/spr/app.css"
   ],
-  "apps":[
+  apps: [
     {
-      "html": "<span></span>",
+      html: '<div>SPR</div>',
     }
   ]
 });
