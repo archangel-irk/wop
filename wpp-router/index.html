@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="//www.openf2.org/img/favicon.ico" type="image/x-icon">
+    <title>WPP router Example</title>
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-default" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#">WPP F2 Example</a>
+        </div>
+        <div class="collapse navbar-collapse">
+          <form class="navbar-form">
+            <button id="spr-index-btn" type="button" class="btn btn-primary">Index</button>
+            <button id="spr-app-btn" type="button" class="btn btn-primary">SPR</button>
+            <button id="as-app-btn" type="button" class="btn btn-primary">AS2.0</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!--<div id="mainContent" class="indexPage container"></div>-->
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js" type="text/javascript"></script>
+    <script src="https://unpkg.com/react@15/dist/react.js"></script>
+    <script src="https://unpkg.com/react-dom@15/dist/react-dom.js"></script>
+    <script src="https://unpkg.com/react-router/umd/ReactRouter.min.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+
+    <!-- F2 -->
+    <script src="f2/f2.debug.js" type="text/javascript"></script>
+
+    <div id="site-root"></div>
+
+    <script type="text/babel">
+      const { Router, Route, browserHistory, IndexRoute, IndexLink, Link } = ReactRouter;
+
+      const NavLink = React.createClass({
+        render() {
+          return <Link {...this.props} activeClassName="active"/>
+        }
+      });
+
+      const App = React.createClass({
+        componentDidMount() {
+          const appsConfig = [
+            {
+              appId: 'com_wiley_as',
+              context: {},
+              manifestUrl: 'apps/as/manifest.js',
+              name: 'Author Services',
+            },
+            {
+              appId: 'com_wiley_spr',
+              context: {},
+              manifestUrl: 'apps/spr/manifest.js',
+              name: 'SPR',
+            },
+          ];
+
+          var containerAppHandlerToken = F2.AppHandlers.getToken();
+          F2.init({
+            debugMode: true,
+          });
+
+//          var appCreateRootFunc = function(appConfig) {
+//            appConfig.root = '#app-root';
+//          };
+
+          var appRenderFunc = function(appConfig, app) {
+
+            console.log(appConfig, app);
+            appConfig.root = $(app).appendTo('#app-root').get(0);
+          };
+
+          F2.AppHandlers
+//            .on(containerAppHandlerToken, F2.Constants.AppHandlers.APP_CREATE_ROOT, 	appCreateRootFunc)
+            .on(containerAppHandlerToken, F2.Constants.AppHandlers.APP_RENDER, 			appRenderFunc)
+          ;
+
+          F2.registerApps(appsConfig);
+        },
+
+        render() {
+          return (
+            <div>
+              <h1>React Router Tutorial</h1>
+              <div id="app-root"></div>
+            </div>
+          )
+        }
+      });
+
+      ReactDOM.render(
+        <Router history={browserHistory}>
+          <Route path="wpp-super-app/wpp-router" component={App}>
+
+          </Route>
+        </Router>,
+        document.getElementById('site-root')
+      );
+    </script>
+  </body>
+</html>
